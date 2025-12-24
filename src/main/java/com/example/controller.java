@@ -18,6 +18,8 @@ import javafx.scene.control.Alert;
 
 
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.Label;
 
 
 
@@ -41,6 +43,10 @@ public class controller {
     @FXML private TextField mailField ;
 
     @FXML private PasswordField passwordField ;
+
+    @FXML private  CheckBox termsCheckBox ; 
+
+    @FXML private Label statusLabel ; // needed review 
 
 
 
@@ -66,17 +72,14 @@ public  void  register() throws SQLException  // add register function in the co
 
  String user_id = useridField.getText().trim();
 
-System.out.println( "User Id  " + user_id);
 
 String mail_id = mailField.getText().trim() ; 
 
-System.out.println(  "mail id " + mail_id);
 
 
 
 String password = passwordField.getText().trim();
 
-System.out.println(  "Password " + password);
 
 
 
@@ -84,10 +87,55 @@ System.out.println(  "Password " + password);
 String username = usernameField.getText().trim() ;
 
 
+
+
+
+
+// code for the status label 
+
+    termsCheckBox.getStyleClass().remove("error-checkbox"); // reset
+
+    
+
+    if (useridField.getText().isEmpty()
+            || usernameField.getText().isEmpty()
+            || mailField.getText().isEmpty()
+            || passwordField.getText().isEmpty()) {
+
+        showError("All fields are required ❌");
+        return;
+    }
+
+if ( !termsCheckBox.isSelected())
+{
+System.out.println("User doesn't selected checkbox");
+
+    termsCheckBox.getStyleClass().add("error-checkbox"); // highlight
+
+    showError("You must agree to the Terms and Conditions to register.");
+
+    passwordField.clear();
+
+password = "" ;
+return ;
+
+}
+
 System.out.println( " User name " + username);
 
 
+System.out.println( "User Id  " + user_id);
 
+
+System.out.println(  "mail id " + mail_id);
+
+
+
+    // If everything is valid
+    showSuccess("Registration successful ✔");
+
+
+    // 
 
 
 
@@ -117,6 +165,25 @@ object.connection.close();
 }
 
 
+// need review 
+
+
+
+private void showSuccess(String message) {
+    statusLabel.setText(message);
+    statusLabel.setVisible(true);
+    statusLabel.getStyleClass().removeAll("status-error");
+    statusLabel.getStyleClass().addAll("status-label", "status-success");
+}
+
+private void showError(String message) {
+    statusLabel.setText(message);
+    statusLabel.setVisible(true);
+    statusLabel.getStyleClass().removeAll("status-success");
+    statusLabel.getStyleClass().addAll("status-label", "status-error");
+}
+
+// 
 
     
 }
