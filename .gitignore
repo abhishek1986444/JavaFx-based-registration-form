@@ -7,8 +7,8 @@
 # Allow directories
 !*/
 
-*.iml
-*.class
-*.log
-.idea/
-.vscode/
+# Allow source files
+!*.java
+!*.fxml
+!*.css
+!*.xml
